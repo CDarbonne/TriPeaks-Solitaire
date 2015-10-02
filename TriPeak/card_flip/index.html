@@ -1,0 +1,46 @@
+<html>
+<style>
+
+.flip-container {
+  perspective: 1000;
+}
+
+.container.click {
+  transform: rotateY(180deg);
+}
+
+.container, .front, .back {
+  width: 71px;
+  height: 96px;
+}
+
+.container {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+}
+
+.front, .back {
+  backface-visibility: hidden;
+  position: absolute;
+}
+
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+</style>
+
+<div class="container" onmousedown="this.classList.toggle('click');">
+  <div class="front"><img src="img/front.gif" /></div>
+  <div class="back"><img src="img/back.gif" /></div>
+</div>
+
+<script>
+
+</script>
+</html>

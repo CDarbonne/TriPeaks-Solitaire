@@ -1,0 +1,116 @@
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="Tri Peaks.css"/>
+<title>Tri Peaks Solitaire</title>
+<script>
+var dealt = false;
+var deck = new Array(53);
+
+function Card(num,suit) {
+   this.suit = suit;
+   this.num = num;
+   this.fname = fname;
+}
+function fname() {
+   return this.suit + this.num + ".gif";
+}
+
+function CreateDeck() {
+   for (i=1; i<14; i++) {
+     deck[i] = new Card("c", i);
+     deck[i+13] = new Card("h", i);
+     deck[i+26] = new Card("s", i);
+     deck[i+39] = new Card("d", i);
+   }
+//Shuffle
+   var n = Math.floor(400 * Math.random() + 500);
+   for (i=1; i<n; i++) {
+      card1 = Math.floor(52*Math.random() + 1);
+      card2 = Math.floor(52*Math.random() + 1);
+      temp = deck[card2];
+      deck[card2] = deck[card1];
+      deck[card1] = temp;
+   }
+}
+
+</script>
+</head>
+<body>
+<hr>
+<form NAME="form1">
+
+<p>
+<!--Top row-->
+<table id="table1">
+<tr>
+  <td colspan="6"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+  <td colspan="6"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+  <td colspan="6"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+</tr>
+
+<!--Second row-->
+<tr>
+  <td colspan="3"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="3"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+  
+  <td colspan="3"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="3"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+  
+  <td colspan="3"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="3"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+</tr>
+
+<!--Third row-->
+<tr>
+  <td colspan="2"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+  
+  <td colspan="2"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+  
+  <td colspan="2"; style="text-align: right;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: center;"> <img src="Cards/b1fv.gif">
+  <td colspan="2"; style="text-align: left;"> <img src="Cards/b1fv.gif">
+</tr>
+</table>
+
+<!--Fourth row-->
+<table id="table2">
+<tr>
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+  <td> <img src="Cards/b1fv.gif">
+</tr>
+</table>
+</p>
+
+<p>
+<!--Deck-->
+<table>
+<tr>
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1pl.gif">
+  <td> <img src="Cards/b1fv.gif">
+</tr>
+</table>
+</p>
+
+</form>
+</body>
+</html>

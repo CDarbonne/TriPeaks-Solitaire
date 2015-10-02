@@ -1,0 +1,87 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<h1>Unused Deck</h1>
+<div id="unusedStack"></div>
+<h1>Used Deck</h1>
+<div id="usedStack"></div>
+<h1>Tri Peaks Deck</h1>
+<div id="triPeaks"></div>
+
+
+<script type="text/javascript" src="js/deckFunctions.js"></script>
+<script type="text/javascript" src="js/translationFunctions.js"></script>
+<script type="text/javascript">
+
+var unusedDeck = [];
+var usedDeck = [];
+var triPeaksDeck = [];
+var triPeaksRootNodes = [];
+
+var flipTime = 600;
+
+// build and shuffle deck
+unusedDeck = initializeDeck(unusedDeck);
+
+// separate decks
+separateDecks(unusedDeck, usedDeck, triPeaksDeck);
+
+// build trees based on each of the roots
+buildTrees(triPeaksDeck, triPeaksRootNodes);
+
+
+// translate tripeaks cards to correct locations
+/* TO DO LATER */
+displayDeck(unusedDeck, "unusedStack");
+displayDeck(usedDeck, "usedStack");
+displayDeck(triPeaksDeck, "triPeaks");
+
+
+// flip over cards (leaf nodes of tri-peaks and top of used deck)
+window.onload = function() {
+  triPeaksDeck.forEach(function(card) {
+    if(card.leftChild == null && card.rightChild == null) {
+      flipCardOverTime(card, flipTime);
+    }
+  });
+
+  flipCardOverTime(usedDeck[usedDeck.length-1], flipTime);
+}
+
+
+
+
+/* objects */
+function Card(id, num, suit) {
+  this.id = id;
+  this.suit = suit;
+  this.num = num;
+  this.isFaceup = false;
+  this.leftChild = null;
+  this.rightChild = null;
+}
+
+/* temp functions */
+function displayDeck(deck, id) {
+  var div = document.getElementById(id);
+
+  deck.forEach(function(e) {
+    var cardInfo = '<div id="'+e.suit+e.num
+      +'" class="cardContainer" onmousedown="this.classList.toggle(\'flip\');">'
+      +'<div class="cardFront"><img src="cards/'+e.suit+e.num+'.gif" /></div>'
+      +'<div class="cardBack"><img src="cards/back.gif" /></div></div>';
+
+    div.innerHTML = div.innerHTML + cardInfo;
+  });
+
+}
+
+
+
+
+</script>
+</body>
+</html>

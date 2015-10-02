@@ -1,0 +1,30 @@
+.cardContainer.flip {
+  transform: rotateY(180deg);
+}
+
+.cardContainer, .cardFront, .cardBack {
+  height: 96px;
+  width: 71px;
+}
+
+.cardContainer {
+  /* temp */
+display: inline-block;
+
+  transition: 0.6s;
+  transform-style: preserve-3d;
+}
+
+.cardFront, .cardBack {
+  backface-visibility: hidden;
+  position: absolute;
+}
+
+.cardBack {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.cardFront {
+  transform: rotateY(180deg);
+}
