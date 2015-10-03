@@ -1,3 +1,21 @@
+body {
+  background-color: green;
+  margin: 0px auto;
+}
+
+#table {
+/*  background-color: blue; */
+  margin: 0px auto;
+  margin-top: 20px;
+  height: 700px;
+  width: 746px;
+}
+
+.flipContainer {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+}
+
 .flipContainer.flipCard {
   transform: rotateY(180deg);
 }
@@ -7,18 +25,14 @@
   transition: 0.6s; 
 }
 
-.cardContainer {
-  /* temp */
-  display: inline-block;
-}
-.cardContainer, .cardFront, .cardBack {
-  height: 96px;
-  width: 71px;
+.moveContainer {
+  position: absolute;
+  transition: 0.6s;
 }
 
-.flipContainer {
-  transition: 0.6s;
-  transform-style: preserve-3d;
+.moveContainer, .cardFront, .cardBack {
+  height: 96px;
+  width: 71px;
 }
 
 .cardFront, .cardBack {

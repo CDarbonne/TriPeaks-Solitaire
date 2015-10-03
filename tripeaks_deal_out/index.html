@@ -1,0 +1,111 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<div id="table"></div>
+
+<script type="text/javascript" src="js/deckFunctions.js"></script>
+<script type="text/javascript" src="js/translationFunctions.js"></script>
+<script type="text/javascript">
+
+// global variables
+var UNUSED_DECK = [];
+var USED_DECK = [];
+var TRIPEAKS_DECK = [];
+var TRIPEAKS_ROOTS = [];
+
+var FLIP_TIME = 600;
+var MOVE_TIME = 600;
+var DEAL_TIME = 100;
+
+var TRIPEAK_INIT_Y = 96*2;
+var TRIPEAK_INIT_X = 0;
+
+var TRIPEAK_COORDINATES = [
+  [(TRIPEAK_INIT_X+110), (TRIPEAK_INIT_Y)],
+  [(TRIPEAK_INIT_X+332), (TRIPEAK_INIT_Y)],
+  [(TRIPEAK_INIT_X+557), (TRIPEAK_INIT_Y)],
+
+  [(TRIPEAK_INIT_X+70),  (TRIPEAK_INIT_Y+48)],
+  [(TRIPEAK_INIT_X+145), (TRIPEAK_INIT_Y+48)],
+  [(TRIPEAK_INIT_X+295), (TRIPEAK_INIT_Y+48)],
+  [(TRIPEAK_INIT_X+370), (TRIPEAK_INIT_Y+48)],
+  [(TRIPEAK_INIT_X+520), (TRIPEAK_INIT_Y+48)],
+  [(TRIPEAK_INIT_X+595), (TRIPEAK_INIT_Y+48)],
+
+  [(TRIPEAK_INIT_X+35),  (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+110), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+185), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+260), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+335), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+410), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+485), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+560), (TRIPEAK_INIT_Y+(48*2))],
+  [(TRIPEAK_INIT_X+635), (TRIPEAK_INIT_Y+(48*2))],
+  
+  [(TRIPEAK_INIT_X+0),   (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+75),  (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+150), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+225), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+300), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+375), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+450), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+525), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+600), (TRIPEAK_INIT_Y+(48*3))],
+  [(TRIPEAK_INIT_X+675), (TRIPEAK_INIT_Y+(48*3))]
+];
+
+// build and shuffle deck
+UNUSED_DECK = initializeDeck(UNUSED_DECK);
+
+// separate decks
+separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
+
+// build trees based on each of the roots
+buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
+
+// add cards to HTML
+displayDeck(TRIPEAKS_DECK, 'table');
+displayDeck(USED_DECK, 'table');
+displayDeck(UNUSED_DECK, 'table');
+
+// flip over cards (leaf nodes of tri-peaks and top of used deck)
+window.onload = function() {
+
+  // deal out the tripeak cards
+  dealDeck(TRIPEAKS_DECK, TRIPEAK_COORDINATES, MOVE_TIME, DEAL_TIME);
+
+  // once the cards have been delt, flip them
+  setTimeout(function() {
+    TRIPEAKS_DECK.forEach(function(e) {
+      if(e.leftChild == null && e.rightChild == null && !e.isFaceUp) {
+        flipCardOverTime(e, FLIP_TIME);
+      }
+    });
+  }, ((TRIPEAKS_DECK.length*DEAL_TIME)+MOVE_TIME));
+
+}
+
+/* temp functions */
+function displayDeck(deck, id) {
+  var div = document.getElementById(id);
+
+  deck.forEach(function(e) {
+    var currentCard = '<div id="'+e.suit+e.num+'" class="moveContainer" onmousedown="this.classList.toggle(\'moveCard\');">';
+    currentCard += '  <div class="flipContainer" onmousedown="this.classList.toggle(\'flipCard\');">';
+    currentCard += '    <div class="cardContainer">';
+    currentCard += '      <div class="cardFront"><img src="cards/'+e.suit+e.num+'.gif" /></div>';
+    currentCard += '      <div class="cardBack"><img src="cards/back.gif" /></div>';
+    currentCard += '    </div>';
+    currentCard += '  </div>';
+    currentCard += '</div>';
+
+    div.innerHTML = div.innerHTML + currentCard;
+  });
+}
+
+</script>
+</body>
+</html>

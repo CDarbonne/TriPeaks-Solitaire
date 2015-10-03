@@ -42,16 +42,19 @@ displayDeck(triPeaksDeck, "triPeaks");
 
 // flip over cards (leaf nodes of tri-peaks and top of used deck)
 window.onload = function() {
+  var i;
+
   triPeaksDeck.forEach(function(card) {
+
     if(card.leftChild == null && card.rightChild == null) {
+      moveCardOverTime(card, (i++)*96, 200, flipTime);
       flipCardOverTime(card, flipTime);
     }
+
   });
 
-  flipCardOverTime(usedDeck[usedDeck.length-1], flipTime);
+ flipCardOverTime(usedDeck[usedDeck.length-1], flipTime);
 }
-
-
 
 
 /* objects */
@@ -68,19 +71,31 @@ function Card(id, num, suit) {
 function displayDeck(deck, id) {
   var div = document.getElementById(id);
 
-  deck.forEach(function(e) {
-    var cardInfo = '<div id="'+e.suit+e.num
-      +'" class="cardContainer" onmousedown="this.classList.toggle(\'flip\');">'
-      +'<div class="cardFront"><img src="cards/'+e.suit+e.num+'.gif" /></div>'
-      +'<div class="cardBack"><img src="cards/back.gif" /></div></div>';
+/*
+<div id="" class="cardContainer">
+  <div class="moveContainer">
+    <div class="flipContainer">
+      <div class="cardFront"><img src="" /></div>
+      <div class="cardBack"><img src="" /></div>
+    </div>
+  </div>
+</div>
+*/
 
-    div.innerHTML = div.innerHTML + cardInfo;
+  deck.forEach(function(e) {
+    var currentCard = '<div id="'+e.suit+e.num+'" class="cardContainer">';
+    currentCard += '  <div class="moveContainer" onmousedown="this.classList.toggle(\'moveCard\');">';
+    currentCard += '    <div class="flipContainer">';
+    currentCard += '      <div class="cardFront"><img src="cards/'+e.suit+e.num+'.gif" /></div>';
+    currentCard += '      <div class="cardBack"><img src="cards/back.gif" /></div>';
+    currentCard += '    </div>';
+    currentCard += '  </div>';
+    currentCard += '</div>';
+
+    div.innerHTML = div.innerHTML + currentCard;
   });
 
 }
-
-
-
 
 </script>
 </body>
