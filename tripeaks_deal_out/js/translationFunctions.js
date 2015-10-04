@@ -19,7 +19,6 @@ function flipCardOverTime(card, time) {
 
 function dealDeck(cardArray, coordinatesArray, moveTime, intervalTime) {
   var cardDistributerCounter = 0;
-  var zIndex = 1;
 
   var cardDistributerInterval = setInterval(function() {
     moveCardOverTime(cardArray[cardDistributerCounter],

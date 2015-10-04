@@ -4,10 +4,15 @@
 </head>
 <body>
 
-<div id="table"></div>
+<div id="table">
+  <div id="fieldCards"></div>
+  <div id="trashCards"></div>
+  <div id="shoeCards"></div>
+</div>
 
 <script type="text/javascript" src="js/deckFunctions.js"></script>
 <script type="text/javascript" src="js/translationFunctions.js"></script>
+<script type="text/javascript" src="js/gameRules.js"></script>
 <script type="text/javascript">
 
 // global variables
@@ -18,7 +23,7 @@ var TRIPEAKS_ROOTS = [];
 
 var FLIP_TIME = 600;
 var MOVE_TIME = 600; // 600
-var DEAL_TIME = 100; // 100
+var DEAL_TIME = 10; // 100
 
 var TRIPEAK_INIT_X = 0;
 var TRIPEAK_INIT_Y = 96;
@@ -73,18 +78,9 @@ separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
 buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
 
 // add cards to HTML
-displayDeck(TRIPEAKS_DECK, 'table');
-displayDeck(USED_DECK, 'table');
-displayDeck(UNUSED_DECK, 'table');
-
-console.log(TRIPEAKS_DECK.length);
-for(var zi = 0; zi < TRIPEAKS_DECK.length; zi++) {
-  var cardId = ''+TRIPEAKS_DECK[zi].suit+TRIPEAKS_DECK[zi].num;
-  var c = document.getElementById(cardId);
-  c.style.zindex = (zi+1);
-  console.log(c.style.zindex);
-  console.log(c);
-}
+displayDeck(TRIPEAKS_DECK, 'fieldCards');
+displayDeck(USED_DECK, 'trashCards');
+displayDeck(UNUSED_DECK, 'shoeCards');
 
 var UNUSED_COORDINATES = [];
 for(var c = 0; c < UNUSED_DECK.length; c++) {
@@ -125,10 +121,15 @@ window.onload = function() {
 /* temp functions */
 function displayDeck(deck, id) {
   var div = document.getElementById(id);
+  var functionNumber;
+
+  if(deck.length == 28) functionNumber = 0;
+  if(deck.length == 1) functionNumber = 1;
+  if(deck.length == 52-29) functionNumber = 2;
 
   deck.forEach(function(e) {
-    var currentCard = '<div id="'+e.suit+e.num+'" class="moveContainer" onmousedown="this.classList.toggle(\'moveCard\');">';
-    currentCard += '  <div class="flipContainer" onmousedown="this.classList.toggle(\'flipCard\');">';
+    var currentCard = '<div id="'+e.suit+e.num+'" class="moveContainer" onmousedown="generalFunction('+functionNumber+', this);">';
+    currentCard += '  <div class="flipContainer">';
     currentCard += '    <div class="cardContainer">';
     currentCard += '      <div class="cardFront"><img src="cards/'+e.suit+e.num+'.gif" /></div>';
     currentCard += '      <div class="cardBack"><img src="cards/back.gif" /></div>';
