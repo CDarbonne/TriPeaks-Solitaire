@@ -1,20 +1,60 @@
 function generalFunction(functionNumber, e) {
 
-  switch(functionNumber) {
-    case 0:
-      fieldCards(e);
-      break;
-    case 1:
-      trashCards(e);
-      break;
-    case 2:
-      shoeCards(e);
-      break;
-    default:
-      break;
+    switch(functionNumber) {
+      case 0:
+        fieldCards(e);
+        break;
+      case 1:
+        trashCards(e);
+        break;
+      case 2:
+        shoeCards(e);
+        break;
+      default:
+        break;
+    }
+
+  if(gameOverCheck()) console.log("GAME OVER");
+  else console.log("NOT GAME OVER");
+
+}
+
+function gameOverCheck() {
+  var i;
+  var gameOver = true;
+
+  if(UNUSED_DECK.length > 0) return false;
+  else console.log("OUT OF UNUSED CARDS");
+
+  for(i = 0; i < TRIPEAKS_DECK.length; i++) {
+    if(TRIPEAKS_DECK[i].isFaceUp) {
+console.log(TRIPEAKS_DECK[i]);
+
+      var trashCard = document.getElementById('trashCards');
+      trashCard = trashCard.getElementsByClassName('moveContainer')[0];
+      var trashCardId = trashCard.id;
+      var trashCardNumber = trashCardId.substr(1, trashCardId.length);
+      trashCardNumber = parseInt(trashCardNumber);
+
+console.log("Trash Card Number: "+trashCardNumber);
+
+
+      var lesser = trashCardNumber - 1;
+      if(lesser < 1) lesser = 13;
+      var greater = trashCardNumber + 1;
+      if(greater > 13) greater = 1;
+
+      if(TRIPEAKS_DECK[i].num == lesser || TRIPEAKS_DECK[i].num == greater) {
+        return false;
+      }
+    }
   }
 
-  flipLeafNodes();
+  return gameOver;
+}
+
+function winCheck() {
+  return (TRIPEAKS_DECK.length == 0);
 }
 
 function trashCards() {
@@ -109,11 +149,12 @@ function fieldCards(e) {
 
     if(card.num == lesser || card.num == greater) {
       
-  for(i = 0; i < TRIPEAKS_DECK.length; i++) {
-    var currentCard = TRIPEAKS_DECK[i];
-    if(currentCard.leftChild == card.id) currentCard.leftChild = null;
-    if(currentCard.rightChild == card.id) currentCard.rightChild = null;
-  }
+      for(i = 0; i < TRIPEAKS_DECK.length; i++) {
+        var currentCard = TRIPEAKS_DECK[i];
+        if(currentCard.leftChild == card.id) currentCard.leftChild = null;
+        if(currentCard.rightChild == card.id) currentCard.rightChild = null;
+      }
+
       moveCardOverTime(card, USED_INIT_X, USED_INIT_Y, MOVE_TIME);
 
       setTimeout(function() {
