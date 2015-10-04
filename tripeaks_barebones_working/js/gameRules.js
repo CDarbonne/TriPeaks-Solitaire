@@ -1,5 +1,6 @@
 function generalFunction(functionNumber, e) {
 
+  if(!GAME_OVER && !GAME_WON) {
     switch(functionNumber) {
       case 0:
         fieldCards(e);
@@ -14,24 +15,24 @@ function generalFunction(functionNumber, e) {
         break;
     }
 
-  flipLeafNodes();
+    flipLeafNodes();
 
-  setTimeout(function() {
-    if(winCheck()) {
+    setTimeout(function() {
+      if(GAME_WON = winCheck()) {
 
-      /* PUT ON WIN CODE HERE */
+        /* PUT ON WIN CODE HERE */
 
-      console.log("GAME WON");
-    } else {
-      if(gameOverCheck()) {
+        console.log("GAME WON");
+      } else {
+        if(GAME_OVER = gameOverCheck()) {
 
-        /* PUT ON GAME OVER CODE HERE */
+          /* PUT ON GAME OVER CODE HERE */
 
-        console.log("GAME OVER");
+          console.log("GAME OVER");
+        }
       }
-    }
-  }, MOVE_TIME + 200);
-
+    }, MOVE_TIME + 200);
+  }
 }
 
 function fieldCards(cardDomElement) {
@@ -183,7 +184,6 @@ function gameOverCheck() {
   var gameOver = true;
 
   if(UNUSED_DECK.length > 0) return false;
-  else console.log("OUT OF UNUSED CARDS");
 
   for(i = 0; i < TRIPEAKS_DECK.length; i++) {
     if(TRIPEAKS_DECK[i].isFaceUp) {
