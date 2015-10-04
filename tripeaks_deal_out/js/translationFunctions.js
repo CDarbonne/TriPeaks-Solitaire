@@ -19,12 +19,14 @@ function flipCardOverTime(card, time) {
 
 function dealDeck(cardArray, coordinatesArray, moveTime, intervalTime) {
   var cardDistributerCounter = 0;
+  var zIndex = 1;
 
-	var cardDistributerInterval = setInterval(function() {
+  var cardDistributerInterval = setInterval(function() {
     moveCardOverTime(cardArray[cardDistributerCounter],
       coordinatesArray[cardDistributerCounter][0],
       coordinatesArray[cardDistributerCounter][1],
       moveTime);
+
 
     cardDistributerCounter++;
     if(cardDistributerCounter === cardArray.length) {

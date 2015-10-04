@@ -17,11 +17,17 @@ var TRIPEAKS_DECK = [];
 var TRIPEAKS_ROOTS = [];
 
 var FLIP_TIME = 600;
-var MOVE_TIME = 600;
-var DEAL_TIME = 100;
+var MOVE_TIME = 600; // 600
+var DEAL_TIME = 100; // 100
 
-var TRIPEAK_INIT_Y = 96*2;
 var TRIPEAK_INIT_X = 0;
+var TRIPEAK_INIT_Y = 96;
+var UNUSED_INIT_X = 0;
+var UNUSED_INIT_Y = 96*4;
+var USED_INIT_X = 71*6;
+var USED_INIT_Y = 96*4;
+
+var USED_COORDINATES = [[USED_INIT_X, USED_INIT_Y]];
 
 var TRIPEAK_COORDINATES = [
   [(TRIPEAK_INIT_X+110), (TRIPEAK_INIT_Y)],
@@ -71,21 +77,49 @@ displayDeck(TRIPEAKS_DECK, 'table');
 displayDeck(USED_DECK, 'table');
 displayDeck(UNUSED_DECK, 'table');
 
+console.log(TRIPEAKS_DECK.length);
+for(var zi = 0; zi < TRIPEAKS_DECK.length; zi++) {
+  var cardId = ''+TRIPEAKS_DECK[zi].suit+TRIPEAKS_DECK[zi].num;
+  var c = document.getElementById(cardId);
+  c.style.zindex = (zi+1);
+  console.log(c.style.zindex);
+  console.log(c);
+}
+
+var UNUSED_COORDINATES = [];
+for(var c = 0; c < UNUSED_DECK.length; c++) {
+  var coordinates = [Math.floor(c*14), UNUSED_INIT_Y];
+  UNUSED_COORDINATES.push(coordinates);
+}
+
+
 // flip over cards (leaf nodes of tri-peaks and top of used deck)
 window.onload = function() {
 
   // deal out the tripeak cards
   dealDeck(TRIPEAKS_DECK, TRIPEAK_COORDINATES, MOVE_TIME, DEAL_TIME);
 
-  // once the cards have been delt, flip them
+  var delay = (TRIPEAKS_DECK.length * DEAL_TIME);
+  setTimeout(function() {
+    dealDeck(UNUSED_DECK, UNUSED_COORDINATES, MOVE_TIME, DEAL_TIME);    
+  }, delay);
+
+  delay = delay + (UNUSED_DECK.length * DEAL_TIME);
+  setTimeout(function() {
+    dealDeck(USED_DECK, USED_COORDINATES, MOVE_TIME, DEAL_TIME);
+  }, delay);
+
+  // once all the cards have been delt, flip over starting cards
+  delay = delay + (USED_DECK.length * DEAL_TIME) + MOVE_TIME;
   setTimeout(function() {
     TRIPEAKS_DECK.forEach(function(e) {
       if(e.leftChild == null && e.rightChild == null && !e.isFaceUp) {
         flipCardOverTime(e, FLIP_TIME);
       }
     });
-  }, ((TRIPEAKS_DECK.length*DEAL_TIME)+MOVE_TIME));
 
+    flipCardOverTime(USED_DECK[0], FLIP_TIME);
+  }, delay);
 }
 
 /* temp functions */
