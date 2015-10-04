@@ -1,0 +1,50 @@
+body {
+  background-color: green;
+  margin: 0px auto;
+}
+
+#table {
+  background-color: blue;
+  margin: 0px auto;
+  margin-top: 20px;
+  height: 700px;
+  width: 746px;
+}
+
+.flipContainer {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flipContainer.flipCard {
+  transform: rotateY(180deg);
+}
+
+.moveContainer.moveCard {
+  transform: translate(200px, 0px);
+  transition: 0.6s; 
+}
+
+.moveContainer {
+  position: absolute;
+  transition: 0.6s;
+}
+
+.moveContainer, .cardFront, .cardBack {
+  height: 96px;
+  width: 71px;
+}
+
+.cardFront, .cardBack {
+  backface-visibility: hidden;
+  position: absolute;
+}
+
+.cardBack {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.cardFront {
+  transform: rotateY(180deg);
+}
