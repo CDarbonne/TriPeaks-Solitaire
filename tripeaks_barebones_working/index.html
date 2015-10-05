@@ -22,6 +22,10 @@ var TRIPEAKS_DECK = [];
 var TRIPEAKS_ROOTS = [];
 var GAME_WON = false;
 var GAME_OVER = false;
+var SCORE = 0;
+var STREAK = false;
+var SCORELOAD = true;
+var BONUS = 20000;
 
 var FLIP_TIME = 600;
 var MOVE_TIME = 300; // 600
@@ -113,7 +117,16 @@ window.onload = function() {
       }
     });
     flipCardOverTime(USED_DECK[0], FLIP_TIME);  
+    
+    var timeLeft = 60 * 2 + 30, 
+      timerDisplay = document.querySelector('#time')
+      bonusDisplay = document.querySelector('#bonus');
+    timer(timeLeft, timerDisplay, bonusDisplay);
+
+    var displayScore = document.querySelector('#score');
+    score(displayScore);
   }, delay);
+
 
 /*
   // deal out the tripeak cards
@@ -167,5 +180,10 @@ function displayDeck(deck, id) {
 }
 
 </script>
+
+<div>Time Left: <span id="time"></span></div>
+<div>Score:                 <span id="score"></span></div>
+<div>Bonus Time Score: <span id="bonus"></span></div>
+
 </body>
 </html>

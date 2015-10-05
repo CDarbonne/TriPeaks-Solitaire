@@ -21,6 +21,8 @@ function generalFunction(functionNumber, e) {
       if(GAME_WON = winCheck()) {
 
         /* PUT ON WIN CODE HERE */
+        var display = document.querySelector('#score');
+        score(display);
 
         console.log("GAME WON");
       } else {
@@ -29,6 +31,7 @@ function generalFunction(functionNumber, e) {
           /* PUT ON GAME OVER CODE HERE */
 
           console.log("GAME OVER");
+
         }
       }
     }, MOVE_TIME + 200);
@@ -69,6 +72,10 @@ function fieldCards(cardDomElement) {
       USED_DECK.push(cardObject);
       TRIPEAKS_DECK.splice(cardIndex, 1);
     }, MOVE_TIME);
+
+    // increment score
+    display = document.querySelector('#score');
+    score(display);
   }
 }
 
@@ -77,6 +84,7 @@ function trashCards() {
 }
 
 function shoeCards(e) {
+  STREAK = false;
   var cardObject = UNUSED_DECK[UNUSED_DECK.length-1];
   var cardDomElement = document.getElementById(''+cardObject.suit+cardObject.num);
 
@@ -208,3 +216,88 @@ function gameOverCheck() {
 
   return gameOver;
 }
+
+function timer(duration, timerDisplay, bonusDisplay) {
+  
+
+  var timer = duration, minutes, seconds;
+  var refreshTime = setInterval(function () {
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    timerDisplay.textContent = minutes + ":" + seconds;
+
+    if ((GAME_OVER == true) || (GAME_WON == true))
+    {
+      clearInterval(refreshTime);
+      return;
+    }
+
+    if (--timer < 0) {
+      GAME_OVER = true;
+      clearInterval(refreshTime);
+    }
+    
+  }, 1000);
+
+  var refreshBonus = setInterval(function () {
+    BONUS -= 200;
+
+     bonusDisplay.textContent = BONUS;
+
+    if ((GAME_OVER == true) || (GAME_WON == true))
+    {
+      clearInterval(refreshBonus);
+      return;
+    }
+
+     if ((BONUS - 200) < 0) {
+      clearInterval(refreshBonus);
+     }
+  }, 1000);
+
+}
+
+function score(display) {
+  if ((STREAK == false) && (SCORELOAD == false) && (!GAME_WON)) {
+    SCORE += 100;
+    STREAK = true;
+  }
+  else if (SCORELOAD == true) {
+    SCORELOAD = false;
+  }
+  else if (GAME_WON == true) {
+    SCORE += BONUS;
+  }
+  else if ((GAME_WON == false) && (STREAK == true)) {
+    SCORE += 200;
+  }
+  
+  display.textContent = SCORE;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
