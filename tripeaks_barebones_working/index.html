@@ -78,14 +78,31 @@ var TRIPEAK_COORDINATES = [
 
 function buildDeck() {
   // build and shuffle deck
+ // if (localStorage.getItem('replayDeck') == null) {
   UNUSED_DECK = initializeDeck(UNUSED_DECK);
+ /* console.log("replayDeck is null");
+  }
+  else {
+    UNUSED_DECK = JSON.parse(localStorage.getItem('replayDeck'));
+    console.log("replayDeck is not null");
+    console.log(UNUSED_DECK[3]);
+  }*/
   BACKUP_DECK = UNUSED_DECK;
 
   // separate decks
   separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
 
+  console.log(UNUSED_DECK[3]);
+  console.log(USED_DECK[0]);
+  console.log(TRIPEAKS_DECK[3]);
+
   // build trees based on each of the roots
+ // if (sessionStorage.getItem('replayDeck') == null) {
   buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
+  /*}
+  else {
+    TRIPEAKS_ROOTS = JSON.parse(sessionStorage.getItem('replayRoots'));
+  }*/
 
   // add cards to HTML
   displayDeck(TRIPEAKS_DECK, 'fieldCards');
@@ -131,7 +148,7 @@ function loadGame() {
     flipCardOverTime(USED_DECK[0], FLIP_TIME);  
     
     var timeLeft = 60 * 2 + 30, 
-      timerDisplay = document.querySelector('#time')
+      timerDisplay = document.querySelector('#time');
       bonusDisplay = document.querySelector('#bonus');
     timer(timeLeft, timerDisplay, bonusDisplay);
 
@@ -200,13 +217,14 @@ function displayDeck(deck, id) {
 }
 
 function reloadGame() {
-  UNUSED_DECK = BACKUP_DECK;
-  trashField();
-  console.log(TRIPEAKS_DECK[3]);
-  //document.bod
-  buildDeck();
-  loadGame();
+ localStorage.setItem('replayDeck', JSON.stringify(BACKUP_DECK));
+ sessionStorage.setItem('replayRoots', JSON.stringify(TRIPEAKS_ROOTS));
+ location.reload();
+}
 
+function newGame() {
+ // localStorage.setItem('replayDeck', JSON.stringify(null));
+  location.reload();
 }
 
 </script>
@@ -215,7 +233,7 @@ function reloadGame() {
 <div>Time Left: <span id="time"></span></div>
 <div>Score: <span id="score"></span></div>
 <div>Bonus Time Score: <span id="bonus"></span></div>
-<input id="newGame" type="button" value="New Game" onclick="location.reload();" /> <input id="replayGame" type="button" value="Replay" onclick="reloadGame();"/>
+<input id="newGame" type="button" value="New Game" onclick="newGame();" /> <input id="replayGame" type="button" value="Replay" onclick="reloadGame();"/>
 
 </body>
 </html>
