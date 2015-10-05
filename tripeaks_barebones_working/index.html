@@ -1,7 +1,7 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
+</header>
 <body>
 
 <div id="table">
@@ -40,6 +40,7 @@ var USED_INIT_X = 71*6;
 var USED_INIT_Y = 96*4;
 
 var USED_COORDINATES = [[USED_INIT_X, USED_INIT_Y]];
+var UNUSED_COORDINATES = [];
 
 var TRIPEAK_COORDINATES = [
   [(TRIPEAK_INIT_X+110), (TRIPEAK_INIT_Y)],
@@ -75,32 +76,38 @@ var TRIPEAK_COORDINATES = [
   [(TRIPEAK_INIT_X+675), (TRIPEAK_INIT_Y+(48*3))]
 ];
 
+function buildDeck() {
+  // build and shuffle deck
+  UNUSED_DECK = initializeDeck(UNUSED_DECK);
+  BACKUP_DECK = UNUSED_DECK;
 
-// build and shuffle deck
-UNUSED_DECK = initializeDeck(UNUSED_DECK);
-BACKUP_DECK = UNUSED_DECK;
+  // separate decks
+  separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
 
-// separate decks
-separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
+  // build trees based on each of the roots
+  buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
 
-// build trees based on each of the roots
-buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
-
-// add cards to HTML
-displayDeck(TRIPEAKS_DECK, 'fieldCards');
-displayDeck(USED_DECK, 'trashCards');
-displayDeck(UNUSED_DECK, 'shoeCards');
+  // add cards to HTML
+  displayDeck(TRIPEAKS_DECK, 'fieldCards');
+  displayDeck(USED_DECK, 'trashCards');
+  displayDeck(UNUSED_DECK, 'shoeCards');
 
 
-var UNUSED_COORDINATES = [];
-for(var c = 0; c < UNUSED_DECK.length; c++) {
-  var coordinates = [Math.floor(c*14), UNUSED_INIT_Y];
-  UNUSED_COORDINATES.push(coordinates);
+  
+  for(var c = 0; c < UNUSED_DECK.length; c++) {
+    var coordinates = [Math.floor(c*14), UNUSED_INIT_Y];
+    UNUSED_COORDINATES.push(coordinates);
+  }
 }
 
 window.onload = function(){
+  buildDeck();
+  loadGame();
+
+}
 
 
+function loadGame() {
   dealDeck(UNUSED_DECK, UNUSED_COORDINATES, MOVE_TIME, DEAL_TIME);    
 
   var delay = (UNUSED_DECK.length * DEAL_TIME);
@@ -132,6 +139,8 @@ window.onload = function(){
     score(displayScore);
   }, delay);
 
+}
+
 
 /*
   // deal out the tripeak cards
@@ -159,7 +168,6 @@ window.onload = function(){
     flipCardOverTime(USED_DECK[0], FLIP_TIME);
   }, delay);
 */
-}
 
 /* temp functions */
 function displayDeck(deck, id) {
@@ -169,8 +177,9 @@ function displayDeck(deck, id) {
   if(deck.length == 28) functionNumber = 0;
   if(deck.length == 1) functionNumber = 1;
   if(deck.length == 52-29) functionNumber = 2;
-
+  var count = 0;
   deck.forEach(function(e) {
+
     var currentCard = '<div id="'+e.suit+e.num+'" class="moveContainer" onmousedown="generalFunction('+functionNumber+', this);">';
     currentCard += '  <div class="flipContainer">';
     currentCard += '    <div class="cardContainer">';
@@ -180,22 +189,33 @@ function displayDeck(deck, id) {
     currentCard += '  </div>';
     currentCard += '</div>';
 
+    if (count == 0) {
+      div.innerHTML = currentCard;
+    }
+    else {
     div.innerHTML = div.innerHTML + currentCard;
+    }
+    count++;
   });
 }
 
 function reloadGame() {
   UNUSED_DECK = BACKUP_DECK;
-  
+  trashField();
+  console.log(TRIPEAKS_DECK[3]);
+  //document.bod
+  buildDeck();
+  loadGame();
 
 }
 
 </script>
 
+<div><span id="gameResult"></span></div>
 <div>Time Left: <span id="time"></span></div>
 <div>Score: <span id="score"></span></div>
 <div>Bonus Time Score: <span id="bonus"></span></div>
-<input id="newGame" type="button" value="New Game" onclick="location.reload();" /> <input id="replayGame" type="button" value="Replay" onclick="reloadGame();"
+<input id="newGame" type="button" value="New Game" onclick="location.reload();" /> <input id="replayGame" type="button" value="Replay" onclick="reloadGame();"/>
 
 </body>
 </html>

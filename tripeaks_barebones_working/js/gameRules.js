@@ -22,13 +22,17 @@ function generalFunction(functionNumber, e) {
 
         /* PUT ON WIN CODE HERE */
         var display = document.querySelector('#score');
+        var displayResult = document.querySelector('#gameResult');
         score(display);
+        result(displayResult);
 
         console.log("GAME WON");
       } else {
         if(GAME_OVER = gameOverCheck()) {
 
           /* PUT ON GAME OVER CODE HERE */
+          var displayResult = document.querySelector('#gameResult');
+          result(displayResult);
 
           console.log("GAME OVER");
 
@@ -238,6 +242,8 @@ function timer(duration, timerDisplay, bonusDisplay) {
 
     if (--timer < 0) {
       GAME_OVER = true;
+      display = document.querySelector('#gameResult');
+      result(display);
       clearInterval(refreshTime);
     }
     
@@ -277,8 +283,26 @@ function score(display) {
   }
   
   display.textContent = SCORE;
+}
 
+function result(display) {
+  if (GAME_WON == true) {
+    var result = "GAME WON!";
+  }
+  else if (GAME_OVER == true) {
+    var result = "GAME LOST";
+  }
 
+  display.textContent = result;
+}
+
+function trashField() {
+  /*var i;
+
+  for (i = 0; i <= TRIPEAKS_DECK.length - 1; i++) {
+    TRIPEAKS_DECK[i].remove();
+  }*/
+  document.body.innerHTML = "";
 }
 
 
