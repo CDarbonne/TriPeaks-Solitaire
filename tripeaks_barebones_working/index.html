@@ -19,6 +19,7 @@
 var UNUSED_DECK = [];
 var USED_DECK = [];
 var TRIPEAKS_DECK = [];
+var BACKUP_DECK = [];
 var TRIPEAKS_ROOTS = [];
 var GAME_WON = false;
 var GAME_OVER = false;
@@ -74,8 +75,10 @@ var TRIPEAK_COORDINATES = [
   [(TRIPEAK_INIT_X+675), (TRIPEAK_INIT_Y+(48*3))]
 ];
 
+
 // build and shuffle deck
 UNUSED_DECK = initializeDeck(UNUSED_DECK);
+BACKUP_DECK = UNUSED_DECK;
 
 // separate decks
 separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
@@ -88,13 +91,15 @@ displayDeck(TRIPEAKS_DECK, 'fieldCards');
 displayDeck(USED_DECK, 'trashCards');
 displayDeck(UNUSED_DECK, 'shoeCards');
 
+
 var UNUSED_COORDINATES = [];
 for(var c = 0; c < UNUSED_DECK.length; c++) {
   var coordinates = [Math.floor(c*14), UNUSED_INIT_Y];
   UNUSED_COORDINATES.push(coordinates);
 }
 
-window.onload = function() {
+window.onload = function(){
+
 
   dealDeck(UNUSED_DECK, UNUSED_COORDINATES, MOVE_TIME, DEAL_TIME);    
 
@@ -179,11 +184,18 @@ function displayDeck(deck, id) {
   });
 }
 
+function reloadGame() {
+  UNUSED_DECK = BACKUP_DECK;
+  
+
+}
+
 </script>
 
 <div>Time Left: <span id="time"></span></div>
-<div>Score:                 <span id="score"></span></div>
+<div>Score: <span id="score"></span></div>
 <div>Bonus Time Score: <span id="bonus"></span></div>
+<input id="newGame" type="button" value="New Game" onclick="location.reload();" /> <input id="replayGame" type="button" value="Replay" onclick="reloadGame();"
 
 </body>
 </html>
