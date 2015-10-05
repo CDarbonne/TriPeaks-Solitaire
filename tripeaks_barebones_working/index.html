@@ -24,8 +24,8 @@ var GAME_WON = false;
 var GAME_OVER = false;
 
 var FLIP_TIME = 600;
-var MOVE_TIME = 200; // 600
-var DEAL_TIME = 10; // 100
+var MOVE_TIME = 300; // 600
+var DEAL_TIME = 50; // 100
 
 var TRIPEAK_INIT_X = 0;
 var TRIPEAK_INIT_Y = 96;
@@ -90,10 +90,32 @@ for(var c = 0; c < UNUSED_DECK.length; c++) {
   UNUSED_COORDINATES.push(coordinates);
 }
 
-
-// flip over cards (leaf nodes of tri-peaks and top of used deck)
 window.onload = function() {
 
+  dealDeck(UNUSED_DECK, UNUSED_COORDINATES, MOVE_TIME, DEAL_TIME);    
+
+  var delay = (UNUSED_DECK.length * DEAL_TIME);
+  setTimeout(function() {
+    dealDeck(USED_DECK, USED_COORDINATES, MOVE_TIME, DEAL_TIME);
+  }, delay);
+
+  delay = delay + (USED_DECK.length * DEAL_TIME);
+  setTimeout(function() {
+    dealDeck(TRIPEAKS_DECK, TRIPEAK_COORDINATES, MOVE_TIME, DEAL_TIME);
+  }, delay);
+
+  // once all the cards have been delt, flip over starting cards
+  delay = delay + (TRIPEAKS_DECK.length * DEAL_TIME) + MOVE_TIME;
+  setTimeout(function() {
+    TRIPEAKS_DECK.forEach(function(e) {
+      if(e.leftChild == null && e.rightChild == null && !e.isFaceUp) {
+        flipCardOverTime(e, FLIP_TIME);
+      }
+    });
+    flipCardOverTime(USED_DECK[0], FLIP_TIME);  
+  }, delay);
+
+/*
   // deal out the tripeak cards
   dealDeck(TRIPEAKS_DECK, TRIPEAK_COORDINATES, MOVE_TIME, DEAL_TIME);
 
@@ -118,6 +140,7 @@ window.onload = function() {
 
     flipCardOverTime(USED_DECK[0], FLIP_TIME);
   }, delay);
+*/
 }
 
 /* temp functions */

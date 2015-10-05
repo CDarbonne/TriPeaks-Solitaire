@@ -6,6 +6,7 @@ body {
 #table {
   margin: 0px auto;
   margin-top: 20px;
+  margin-bottom: 20px;
   height: 480px;
   width: 746px;
 }
