@@ -14,7 +14,11 @@ function flipCardOverTime(card, time) {
 
   f.style.transition = 'all '+time+'ms';
   f.classList.toggle('flipCard');
+  if ((localStorage.getItem('replayBool') == 1) && localStorage.getItem('initialFlipBool') == 1) {
+    return;
+  }
   card.isFaceUp = !card.isFaceUp;
+
 }
 
 function dealDeck(cardArray, coordinatesArray, moveTime, intervalTime) {

@@ -29,8 +29,8 @@ var SCORELOAD = true;
 var BONUS = 20000;
 
 var FLIP_TIME = 600;
-var MOVE_TIME = 300; // 600
-var DEAL_TIME = 50; // 100
+var MOVE_TIME = 600; // 600
+var DEAL_TIME = 60; // 100
 
 var TRIPEAK_INIT_X = 0;
 var TRIPEAK_INIT_Y = 96;
@@ -78,31 +78,31 @@ var TRIPEAK_COORDINATES = [
 
 function buildDeck() {
   // build and shuffle deck
- // if (localStorage.getItem('replayDeck') == null) {
-  UNUSED_DECK = initializeDeck(UNUSED_DECK);
- /* console.log("replayDeck is null");
+  if (localStorage.getItem('replayBool') == 1) {
+    UNUSED_DECK = JSON.parse(localStorage.getItem('replayDeck'));
+    TRIPEAKS_ROOTS = JSON.parse(localStorage.getItem('replayRoots'));
+    console.log("replayDeck is not null");
+    localStorage.setItem('initialFlipBool', JSON.stringify(1));
   }
   else {
-    UNUSED_DECK = JSON.parse(localStorage.getItem('replayDeck'));
-    console.log("replayDeck is not null");
-    console.log(UNUSED_DECK[3]);
-  }*/
-  BACKUP_DECK = UNUSED_DECK;
+    UNUSED_DECK = initializeDeck(UNUSED_DECK);
+    console.log("replayDeck is null");
+    var i;
+    for (i = 0; i < 52; i ++) {
+      BACKUP_DECK[i] = UNUSED_DECK[i];
+    }
+  }
+
 
   // separate decks
   separateDecks(UNUSED_DECK, USED_DECK, TRIPEAKS_DECK);
 
   console.log(UNUSED_DECK[3]);
   console.log(USED_DECK[0]);
-  console.log(TRIPEAKS_DECK[3]);
+  console.log(TRIPEAKS_DECK[27]);
 
   // build trees based on each of the roots
- // if (sessionStorage.getItem('replayDeck') == null) {
   buildTrees(TRIPEAKS_DECK, TRIPEAKS_ROOTS);
-  /*}
-  else {
-    TRIPEAKS_ROOTS = JSON.parse(sessionStorage.getItem('replayRoots'));
-  }*/
 
   // add cards to HTML
   displayDeck(TRIPEAKS_DECK, 'fieldCards');
@@ -141,10 +141,11 @@ function loadGame() {
   delay = delay + (TRIPEAKS_DECK.length * DEAL_TIME) + MOVE_TIME;
   setTimeout(function() {
     TRIPEAKS_DECK.forEach(function(e) {
-      if(e.leftChild == null && e.rightChild == null && !e.isFaceUp) {
+      if(e.leftChild == null && e.rightChild == null) {  //&& !e.isFaceUp) {
         flipCardOverTime(e, FLIP_TIME);
       }
     });
+    localStorage.setItem('initialFlipBool', JSON.stringify(0));
     flipCardOverTime(USED_DECK[0], FLIP_TIME);  
     
     var timeLeft = 60 * 2 + 30, 
@@ -217,18 +218,25 @@ function displayDeck(deck, id) {
 }
 
 function reloadGame() {
- localStorage.setItem('replayDeck', JSON.stringify(BACKUP_DECK));
- sessionStorage.setItem('replayRoots', JSON.stringify(TRIPEAKS_ROOTS));
- location.reload();
+  if (localStorage.getItem('replayBool') == 0) {
+    localStorage.setItem('replayDeck', JSON.stringify(BACKUP_DECK));
+    localStorage.setItem('replayRoots', JSON.stringify(TRIPEAKS_ROOTS));
+    localStorage.setItem('replayBool', JSON.stringify(1));
+  }
+  else {
+    alert("Only one replay allowed!");
+    localStorage.setItem('replayBool', JSON.stringify(0));
+  }
+  location.reload();
 }
 
 function newGame() {
- // localStorage.setItem('replayDeck', JSON.stringify(null));
+  localStorage.setItem('replayBool', JSON.stringify(0));
   location.reload();
 }
 
 </script>
-
+	
 <div><span id="gameResult"></span></div>
 <div>Time Left: <span id="time"></span></div>
 <div>Score: <span id="score"></span></div>

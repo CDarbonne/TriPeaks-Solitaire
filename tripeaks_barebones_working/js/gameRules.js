@@ -65,7 +65,7 @@ function fieldCards(cardDomElement) {
     console.log("Object for card was not found.");
     return;
   }
-
+  console.log(cardObject);
   // check if card can be thrown away
   if(checkIfFieldCardCanBeThrown(cardObject)) {
     moveCardOverTime(cardObject, USED_INIT_X, USED_INIT_Y, MOVE_TIME);
